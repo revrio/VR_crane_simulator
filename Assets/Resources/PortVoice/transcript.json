@@ -1,0 +1,23 @@
+{
+  "Common/welcome": "Hi, I'm Maya, your port instructor. Choose a layout on the console, then select Start operation. Follow the glowing pickup outline and the direction guide.",
+  "Common/align": "Move the gantry and trolley toward the highlighted container. The console shows how far left, right, shipward or yardward to move.",
+  "Common/lift": "You're connected. Raise the container clear of nearby stacks before travelling. Release the control to stop the winch.",
+  "Common/transfer": "Carry the container to its highlighted receiving slot. The cabin monitor can show the load, destination, or port overview.",
+  "Common/land": "You're over the receiving slot. Lower gently onto the deck or the supporting container. A little alignment tolerance is allowed.",
+  "Common/settle": "Let the released container settle on its support while I check the delivery.",
+  "Common/accepted": "Delivery accepted. Follow the console for the next task.",
+  "Common/park": "All containers are placed. Return the empty spreader to the highlighted parking position.",
+  "Common/shipment_complete": "Layout complete. Thank you. Please rate your head, neck, shoulder, hand and eye experience using the feedback sliders on the console.",
+  "Desktop/couple": "Ready to connect. Press space to lock the highlighted container. Contact by itself does not lock it.",
+  "Desktop/release": "The container is supported. Press space to release it, then let it settle.",
+  "Desktop/lower": "You're above the container. To lower, press the Down Arrow key. For gentle movement, hold Left Shift while operating the hoist.",
+  "Desktop/paused": "The operation is paused. To continue, click Resume or press Escape.",
+  "Quest/couple": "Ready to connect. Press the right controller a button to lock the highlighted container. Contact by itself does not lock it.",
+  "Quest/release": "The container is supported. Press the right controller a button to release it, then let it settle.",
+  "Quest/lower": "You're above the container. To lower, push the right thumbstick down. For gentle movement, squeeze the right grip while operating the hoist.",
+  "Quest/paused": "The operation is paused. To continue, point at Resume on the console and press the trigger.",
+  "Simulator/couple": "Ready to connect. Hold space and tap b to lock the highlighted container. Contact by itself does not lock it.",
+  "Simulator/release": "The container is supported. Hold space and tap b to release it, then let it settle.",
+  "Simulator/lower": "You're above the container. To lower, hold Space and press S. For gentle movement, hold Space and G while operating the hoist.",
+  "Simulator/paused": "The operation is paused. To continue, click Resume on the console using the simulated controller ray and trigger."
+}

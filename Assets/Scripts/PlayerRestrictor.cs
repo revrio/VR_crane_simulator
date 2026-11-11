@@ -1,8 +1,28 @@
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
+using System.Collections.Generic;
 
 public class PlayerRestrictor : MonoBehaviour
 {
+    private readonly HashSet<object> controlOwners = new HashSet<object>();
+    private readonly Dictionary<GameObject, bool> previousStates = new Dictionary<GameObject, bool>();
+
+    public void AcquireControls(object owner)
+    {
+        if (!controlOwners.Add(owner) || controlOwners.Count != 1) return;
+        foreach (var obj in new[] { Locomotion, RightTeleportInteractor, RightTeleportStabilizer, LeftTeleportInteractor, LeftTeleportStabilizer })
+        {
+            if (obj == null) continue;
+            previousStates[obj] = obj.activeSelf;
+            obj.SetActive(false);
+        }
+    }
+
+    public void ReleaseControls(object owner)
+    {
+        if (!controlOwners.Remove(owner) || controlOwners.Count != 0) return;
+        foreach (var pair in previousStates) if (pair.Key != null) pair.Key.SetActive(pair.Value);
+        previousStates.Clear();
+    }
     [SerializeField] private GameObject Locomotion;
     [SerializeField] private GameObject Turn; // In Locomotion
     [SerializeField] private GameObject Move; // In Locomotion   

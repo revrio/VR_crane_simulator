@@ -1,137 +1,40 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
-using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections;
 
+[RequireComponent(typeof(XRGrabInteractable))]
 public class RightLever : MonoBehaviour
 {
-    [Header("CraneController Reference")]
     public CraneController CraneController;
+    private XRGrabInteractable grab;
+    private InputAction action;
+    private PlayerRestrictor restrictor;
+    private bool held;
 
-    [Header("InputAction References")]
-    private InputAction rightThumbstickAction;
-    private XRGrabInteractable grabInteractable;
-    private InputManager inputManager;
-    [Header("Restrictor")]
-    private PlayerRestrictor playerRestrictor;
-    [Header("Other Variables")]
-    private float deadzone = 0.1f;
-    private Coroutine holdCoroutine = null;
-    private bool isGrabbed = false;
-
-    private void Awake()
+    private void Start()
     {
-        grabInteractable = GetComponent<XRGrabInteractable>();
-        playerRestrictor = FindAnyObjectByType<PlayerRestrictor>();
-
-        grabInteractable.selectEntered.AddListener(OnGrabbed);
-        grabInteractable.selectExited.AddListener(OnReleased);
+        grab = GetComponent<XRGrabInteractable>();
+        restrictor = FindAnyObjectByType<PlayerRestrictor>();
+        var manager = GetComponentInParent<InputManager>();
+        if (manager != null) action = manager.Actions.XRIRight.Thumbstick;
     }
 
-    private void  Start()
+    private void Update()
     {
-        inputManager = GetComponentInParent<InputManager>();
-
-        rightThumbstickAction = inputManager.Actions.XRIRight.Thumbstick;
-        rightThumbstickAction.performed += OnThumbstickChanged;
-        rightThumbstickAction.canceled += OnThumbstickChanged;
-
-        rightThumbstickAction.Enable();
-
-        rightThumbstickAction.Disable();
-    }
-
-    private void OnGrabbed(SelectEnterEventArgs enterArgs)
-    {
-        isGrabbed = true;
-        rightThumbstickAction.Enable();
-
-        playerRestrictor.DisableLocomotion();
-        playerRestrictor.DisableTeleportInteractors();
-        //playerRestrictor.DisableNearFarInteractor();
-    }
-    private void OnReleased(SelectExitEventArgs exitArgs)
-    {
-        isGrabbed = false;
-        if (holdCoroutine != null)
+        bool selected = grab != null && grab.isSelected;
+        if (selected != held)
         {
-            StopCoroutine(holdCoroutine);
-            holdCoroutine = null;
+            held = selected;
+            if (held) restrictor?.AcquireControls(this); else restrictor?.ReleaseControls(this);
         }
-
-        rightThumbstickAction.Disable();
-
-        playerRestrictor.EnableLocomotion();
-        playerRestrictor.EnableTeleportInteractors();
-        //playerRestrictor.EnableNearFarInteractor();
-    }
-    
-
-    private void OnEnable()
-    {
-        if (rightThumbstickAction == null) return;
-        rightThumbstickAction.performed += OnThumbstickChanged;
-        rightThumbstickAction.canceled += OnThumbstickChanged;
-
-        rightThumbstickAction.Enable();
+        float value = held && action != null ? action.ReadValue<Vector2>().y : 0f;
+        CraneController?.MoveHookY(Mathf.Abs(value) > 0.1f ? value : 0f);
     }
 
     private void OnDisable()
     {
-        rightThumbstickAction.performed -= OnThumbstickChanged;
-        rightThumbstickAction.canceled -= OnThumbstickChanged;
-        rightThumbstickAction.Disable();
-    }
-
-    private void OnThumbstickChanged(InputAction.CallbackContext context)
-    {
-        Vector2 axis = context.ReadValue<Vector2>();
-
-        if (Mathf.Abs(axis.y) <= deadzone)
-        {
-            if(holdCoroutine != null)
-            {
-                StopCoroutine(holdCoroutine);
-                holdCoroutine = null;
-            }
-            return;
-        }
-
-        if(holdCoroutine == null)
-        {
-            holdCoroutine = StartCoroutine(HookMoveRoutine());
-        }
-
-        //No need to use axis.x for now
-    }
-
-    private IEnumerator HookMoveRoutine()
-    {
-        while (true)
-        {
-            float currentY = rightThumbstickAction.ReadValue<Vector2>().y;
-
-            if (Mathf.Abs(currentY) <= deadzone)
-            {
-                holdCoroutine = null;
-                yield break;
-            }
-            CraneController.MoveHookY(currentY);
-            Debug.Log($"[RightLever] (Hold) Joystick Y: {currentY:F2}");
-
-            yield return null;//wait till next frame
-        }
-    }
-
-    private void OnDestroy()
-    {
-        grabInteractable.selectEntered.RemoveListener(OnGrabbed);
-        grabInteractable.selectExited.RemoveListener(OnReleased);
-
-        rightThumbstickAction.performed -= OnThumbstickChanged;
-        rightThumbstickAction.canceled -= OnThumbstickChanged;
+        held = false;
+        restrictor?.ReleaseControls(this);
+        CraneController?.MoveHookY(0f);
     }
 }

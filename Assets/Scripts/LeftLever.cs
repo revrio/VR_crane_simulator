@@ -1,169 +1,42 @@
-﻿// LeftLever.cs
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
+[RequireComponent(typeof(XRGrabInteractable))]
 public class LeftLever : MonoBehaviour
 {
-    [Header("CraneController Reference")]
     public CraneController CraneController;
-
-    [Header("InputAction References")]
-    private InputAction leftThumbstickAction;
-    private XRGrabInteractable grabInteractable;
-    private InputManager inputManager;
-    [Header("Restrictor")]
-    private PlayerRestrictor playerRestrictor;
-    [Header("Other Variables")]
-    private float deadzone = 0.1f;
-    private Coroutine holdCoroutine = null;
-    private bool isGrabbed = false;
-
-    private void Awake()
-    {
-        grabInteractable = GetComponent<XRGrabInteractable>();
-        playerRestrictor = FindAnyObjectByType<PlayerRestrictor>();
-
-        grabInteractable.selectEntered.AddListener(OnGrabbed);
-        grabInteractable.selectExited.AddListener(OnReleased);
-    }
+    private XRGrabInteractable grab;
+    private InputAction action;
+    private PlayerRestrictor restrictor;
+    private bool held;
 
     private void Start()
     {
-        inputManager = GetComponentInParent<InputManager>();
-        leftThumbstickAction = inputManager.Actions.XRILeft.Thumbstick;
-        leftThumbstickAction.performed += OnThumbstickChanged;
-        leftThumbstickAction.canceled += OnThumbstickChanged;
-
-        leftThumbstickAction.Enable();
-
-        leftThumbstickAction.Disable();
+        grab = GetComponent<XRGrabInteractable>();
+        restrictor = FindAnyObjectByType<PlayerRestrictor>();
+        var manager = GetComponentInParent<InputManager>();
+        if (manager != null) action = manager.Actions.XRILeft.Thumbstick;
     }
 
-    private void OnDestroy()
+    private void Update()
     {
-        grabInteractable.selectEntered.RemoveListener(OnGrabbed);
-        grabInteractable.selectExited.RemoveListener(OnReleased);
-
-        leftThumbstickAction.performed -= OnThumbstickChanged;
-        leftThumbstickAction.canceled -= OnThumbstickChanged;
-    }
-
-    private void OnEnable()
-    {
-        if (leftThumbstickAction == null) return;
-        leftThumbstickAction.performed += OnThumbstickChanged;
-        leftThumbstickAction.canceled += OnThumbstickChanged;
-
-        leftThumbstickAction.Enable();
+        bool selected = grab != null && grab.isSelected;
+        if (selected != held)
+        {
+            held = selected;
+            if (held) restrictor?.AcquireControls(this); else restrictor?.ReleaseControls(this);
+        }
+        Vector2 axis = held && action != null ? action.ReadValue<Vector2>() : Vector2.zero;
+        CraneController?.MoveCar(Mathf.Abs(axis.y) >= Mathf.Abs(axis.x) && Mathf.Abs(axis.y) > 0.1f ? axis.y : 0f);
+        CraneController?.CraneRotation(Mathf.Abs(axis.x) > Mathf.Abs(axis.y) && Mathf.Abs(axis.x) > 0.1f ? axis.x : 0f);
     }
 
     private void OnDisable()
     {
-        leftThumbstickAction.performed -= OnThumbstickChanged;
-        leftThumbstickAction.canceled -= OnThumbstickChanged;
-        leftThumbstickAction.Disable();
-    }
-
-    private void OnGrabbed(SelectEnterEventArgs args)
-    {
-        isGrabbed = true;
-        leftThumbstickAction.Enable();
-
-        playerRestrictor.DisableLocomotion();
-        playerRestrictor.DisableTeleportInteractors();
-        //playerRestrictor.DisableNearFarInteractor();
-    }
-
-    private void OnReleased(SelectExitEventArgs args)
-    {
-        isGrabbed = false;
-
-        if (holdCoroutine != null)
-        {
-            StopCoroutine(holdCoroutine);
-            holdCoroutine = null;
-        }
-
-        leftThumbstickAction?.Disable();
-
-        playerRestrictor.EnableLocomotion();
-        playerRestrictor.EnableTeleportInteractors();
-        //playerRestrictor.EnableNearFarInteractor();
-    }
-
-    private void OnThumbstickChanged(InputAction.CallbackContext context)
-    {
-
-        Vector2 axis = context.ReadValue<Vector2>();
-        Debug.Log($"[LeftLever] Axis: X={axis.x:F2}, Y={axis.y:F2}");
-
-        bool moveCar = Mathf.Abs(axis.y) >= Mathf.Abs(axis.x);
-        float value = moveCar ? axis.y : axis.x;
-
-        if (Mathf.Abs(value) <= deadzone)
-        {
-            if (holdCoroutine != null)
-            {
-                StopCoroutine(holdCoroutine);
-                holdCoroutine = null;
-            }
-            return;
-        }
-
-        if (holdCoroutine == null)
-        {
-            holdCoroutine = moveCar
-                ? StartCoroutine(CarMoveRoutine())
-                : StartCoroutine(BoomRotateRoutine());
-        }
-    }
-
-    private IEnumerator CarMoveRoutine()
-    {
-        while (true)
-        {
-            if (!isGrabbed)
-            {
-                holdCoroutine = null;
-                yield break;
-            }
-
-            float currentY = leftThumbstickAction.ReadValue<Vector2>().y;
-            if (Mathf.Abs(currentY) <= deadzone)
-            {
-                holdCoroutine = null;
-                yield break;
-            }
-
-            CraneController.MoveCar(currentY);
-            Debug.Log($"[LeftLever] (Hold) Car Move Y: {currentY:F2}");
-            yield return null;
-        }
-    }
-
-    private IEnumerator BoomRotateRoutine()
-    {
-        while (true)
-        {
-            if (!isGrabbed)
-            {
-                holdCoroutine = null;
-                yield break;
-            }
-
-            float currentX = leftThumbstickAction.ReadValue<Vector2>().x;
-            if (Mathf.Abs(currentX) <= deadzone)
-            {
-                holdCoroutine = null;
-                yield break;
-            }
-
-            CraneController.CraneRotation(currentX);
-            Debug.Log($"[LeftLever] (Hold) Boom Rotate X: {currentX:F2}");
-            yield return null;
-        }
+        held = false;
+        restrictor?.ReleaseControls(this);
+        CraneController?.MoveCar(0f);
+        CraneController?.CraneRotation(0f);
     }
 }

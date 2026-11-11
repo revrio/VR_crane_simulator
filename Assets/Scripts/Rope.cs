@@ -29,7 +29,7 @@ public class Rope : MonoBehaviour
 
         Vector3 offset = hook.position - basePoint.position;
         float length = offset.magnitude;
-        if (length > maxLength)
+        if (length > maxLength && !hook.isKinematic)
         {
             Vector3 dir = offset / length;
             float stretch = length - maxLength;

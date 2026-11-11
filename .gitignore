@@ -83,3 +83,10 @@ crashlytics-build.properties
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+
+# Local Python analysis/test cache
+__pycache__/
+
+# Crash dumps and generated debugging information
+mono_crash.*
+*_BurstDebugInformation_DoNotShip/

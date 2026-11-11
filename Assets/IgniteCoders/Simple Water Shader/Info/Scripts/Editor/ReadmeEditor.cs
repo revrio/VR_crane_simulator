@@ -16,7 +16,7 @@ public class ReadmeEditor : Editor {
 	
 	static ReadmeEditor()
 	{
-		EditorApplication.delayCall += SelectReadmeAutomatically;
+		// Keep documentation available from its menu without changing editor layout on startup.
 	}
 	
 	static void SelectReadmeAutomatically()
@@ -38,8 +38,9 @@ public class ReadmeEditor : Editor {
 	{
 		var assembly = typeof(EditorApplication).Assembly; 
 		var windowLayoutType = assembly.GetType("UnityEditor.WindowLayout", true);
-		var method = windowLayoutType.GetMethod("LoadWindowLayout", BindingFlags.Public | BindingFlags.Static);
-		method.Invoke(null, new object[]{Path.Combine(Application.dataPath, "IgniteCoders/Simple Water Shader/Info/Layout.wlt"), false});
+		var method = windowLayoutType.GetMethod("LoadWindowLayout", BindingFlags.Public | BindingFlags.Static,
+			null, new[] { typeof(string), typeof(bool) }, null);
+		method?.Invoke(null, new object[]{Path.Combine(Application.dataPath, "IgniteCoders/Simple Water Shader/Info/Layout.wlt"), false});
 	}
 	
 	[MenuItem("Documentation/Simple Water Shader")]

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 742157b4aba9684e3b3842648e72598f, type: 3}
+  m_Name: LayoutB
+  m_EditorClassIdentifier: 
+  layoutId: B
+  targetYawDegrees:
+  - 0
+  - 0
+  - 0
+  loadYawDegrees:
+  - 0
+  - 0
+  - 0
+  layoutName: Layout B - Consolidated receiving bays
+  description: Same sources, loads, target precision and crane settings. Only receiving
+    positions change.
+  targetPositions:
+  - {x: 21.95752, y: 31.85, z: 31.501305}
+  - {x: 16.666517, y: 31.85, z: 30.935776}
+  - {x: 11.441364, y: 31.85, z: 31.941896}
+  loadSpawnPositions:
+  - {x: 38.41339, y: 31.900002, z: 42.341427}
+  - {x: 34.89733, y: 31.900002, z: 35.558002}
+  - {x: 29.273247, y: 31.900002, z: 30.38623}
+  difficultyRating: 2

@@ -17,8 +17,8 @@ public class InputManager : MonoBehaviour
 
     void OnDisable()
     {
-        Actions.Disable(); 
+        Actions?.Disable();
     }
 
-    
+    void OnDestroy() => Actions?.Dispose();
 }

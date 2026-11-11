@@ -1,0 +1,93 @@
+{
+    "name": "PortCraneControls",
+    "maps": [
+        {
+            "name": "Crane",
+            "id": "ef614372-497d-4530-9f25-72ef874342d2",
+            "actions": [
+                {
+                    "name": "Left stick",
+                    "type": "Value",
+                    "id": "ec15e742-6681-468e-8e5d-52cf282ad000",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right stick",
+                    "type": "Value",
+                    "id": "ec15e742-6681-468e-8e5d-52cf282ad001",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Lock",
+                    "type": "Button",
+                    "id": "ec15e742-6681-468e-8e5d-52cf282ad002",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Precision",
+                    "type": "Button",
+                    "id": "ec15e742-6681-468e-8e5d-52cf282ad003",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f852e742-6681-468e-8e5d-52cf282ad000",
+                    "path": "<XRController>{LeftHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left stick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f852e742-6681-468e-8e5d-52cf282ad001",
+                    "path": "<XRController>{RightHand}/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right stick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f852e742-6681-468e-8e5d-52cf282ad002",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f852e742-6681-468e-8e5d-52cf282ad003",
+                    "path": "<XRController>{RightHand}/{GripButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Precision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ]
+}

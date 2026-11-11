@@ -1,0 +1,10 @@
+{
+  "welcome": "Hi, I'm Maya. Choose a layout and traffic scenario. Press P for staged practice, or I to watch the trucks deliver the containers. I'll guide the shipment.",
+  "crossing_wait": "A worker is crossing. The trolley is held at the stop line. Keep the load raised and wait for green. Then continue toward the ship.",
+  "safety_stop": "Protected stop. Keep the load locked. Inspect the warning, then press E to acknowledge. Wait for clearance before resuming.",
+  "worker_clearing": "The worker is leaving the restricted area. Keep the crane stopped. Wait until the area is clear.",
+  "safety_ready": "The area is clear. Check the load and route. Press E again to resume. Move away slowly if you touched an obstacle.",
+  "truck_intake": "The next truck is arriving. The handling machine will unload its container into the yard. Wait for the machine to clear before operating the crane.",
+  "handler_clear": "The container is down. The handling machine is raising its spreader and reversing clear. Keep the transfer area open.",
+  "shipment_complete": "All five containers are aboard, and the empty spreader is parked. Your move times and incident records are saved. Reset to try another layout."
+}

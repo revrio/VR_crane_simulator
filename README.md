@@ -1,3 +1,25 @@
+# Work study and ergonomics research demo
+
+**Current Operational Port:** open `Assets/Scenes/OperationalPort.unity`. Choose a layout (1–4), then Start operation (P in desktop mode). Five containers begin in the yard, with fixed background road traffic, workers and neighbouring cranes. A/D moves the gantry, W/S moves the trolley, arrows hoist and Space locks/releases. Impacts produce feedback and records without freezing the equipment; there is no protected stop, acknowledgement or recovery workflow. Pause and Reset remain available. On Quest 2, left stick controls gantry/trolley, right stick controls hoist, right A locks/releases and right grip enables precision. See [the current setup and validation notes](docs/QUEST_2_READY.md).
+
+The browser build downloads and verifies all runtime assets before enabling **Start simulator**. It uses desktop keyboard/mouse controls and offers session CSV downloads as a ZIP. See [the web build and deployment guide](docs/WEB_DEPLOYMENT.md).
+
+The five-container iteration-2 scene/player is preserved as `Assets/Scenes/OperationalPortIteration2.unity` and `tools/run_desktop_demo.sh --iteration2`. Its [historical guide](docs/OPERATIONAL_ITERATION_2.md) describes the four handling presets.
+
+The first one-container operational chain is preserved as `Assets/Scenes/OperationalPortIteration1.unity`; `tools/run_desktop_demo.sh --iteration1` launches its previous Linux player.
+
+The previous v6 scene and player are available below; `tools/run_desktop_demo.sh --research` launches that player explicitly.
+
+Open **Assets/Scenes/SeaportResearch.unity** in **Unity 6000.0.26f1**, then press Play. Click **Practice** and Maya, the port instructor NPC, guides each action with offline speech and captions. Press **C** for the seated cabin with Maya, joystick consoles and a live load-camera monitor. Tab cycles all four views; Shift slows motion, and on-screen buttons also operate the crane. Choose A / spread bays, B / compact bays, or C / stacked pickup. The scene supports keyboard/mouse testing and tracked VR controllers, explicit practice/measured runs, four work elements, placement validation, and checkpointed CSV export.
+
+The cabin keeps one live load monitor and a clear forward view; guidance and run controls stay in the right console. A visible overhead boom/trolley supports four steel hoist cables and a detailed twistlock spreader. Corrugated task containers have door hardware, corner fittings and ID markings. Forty extra freight containers, animated harbor water, drifting clouds and a distant tugboat fill out the port. Layout C unloads C1 from the top, then C2, then C3 into separate bays.
+
+Read [the demo guide](docs/DEMO_GUIDE.md) for controls, the Quest Link setup, exported data, and verification. The [project review and experiment plan](docs/WSD_ERGONOMICS_PLAN.md) explains the time study, method comparison, normal/standard-time assumptions, and final-study protocol.
+
+The original simulator is credited below. The research scene and instrumentation adapt it for a course project. Desktop verification does not establish headset ergonomics or industrial crane fidelity.
+
+---
+
 # VR Crane Simulator: Occupational Health & Safety Training
 
 A physics-driven Virtual Reality prototype designed to provide foundational crane operation experience, focusing on Occupational Health and Safety (OHS). Developed during my tenure as an Application and Simulation Developer Intern, this project prioritizes core mechanics and rapid prototyping to demonstrate practical safety concepts.
